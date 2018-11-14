@@ -1,0 +1,108 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    getEvent(id: ID!): Event
+    getUserEvents(userId: ID!): [Event]
+    getGroup(id: ID!): Group
+    getUserGroups(userId: ID!): [Group]
+    findUser(name: String, email: String): User
+    getAccount(userId: ID!): Account
+}
+
+type Mutation {
+    addEvent(event: EventInput!): Event
+    updateEvent(id: ID!, event: EventInput!): Event
+    deleteEvent(id: ID!): Event
+    addComment(eventId: ID!, comment: CommentInput!): Comment
+    updateComment(id: ID!, comment: CommentInput!): Comment
+    deleteComment(id: ID!): Comment
+    addGroup(group: GroupInput!): Group
+    updateGroup(id: ID!, group: GroupInput!): Group
+    deleteGroup(id: ID!): Group
+    addAccount(account: AccountInput!): Account
+    updateAccount(id: ID!, account: AccountInput!): Account
+    deleteAccount(id: ID!): Account
+}
+
+type Event {
+    id: ID!
+    title: String!
+    info: String
+    organizer: User
+    start: Time
+    end: Time
+    location: String
+    guests: [Guest]
+    comments: [Comment]
+    cancelled: Boolean
+}
+
+type EventInput {
+    title: String!
+    info: String
+    start: Time
+    end: Time
+    location: String
+    guests: [ID]
+}
+
+type Comment {
+    id: ID!
+    user: User!
+    time: Time
+    text: String
+}
+
+type CommentInput {
+    text: String
+}
+
+type Guest {
+    user: User!
+    response: Reponse
+}
+
+type User {
+    id: ID!
+    name: String!
+}
+
+type Account {
+    user: User!
+    email: String!
+    role: Role!
+}
+
+type AccountInput {
+    name: String!
+    email: String!
+    role: Role!
+}
+
+type Group {
+    id: ID!
+    name: String!
+    owner: User
+    members: [User]
+}
+
+type GroupInput {
+    name: String!
+    members: [ID]
+}
+
+enum Role {
+    ADMIN
+    USER
+}
+
+enum Response {
+    YES
+    NO
+    MAYBE
+}
+
+scalar Time
